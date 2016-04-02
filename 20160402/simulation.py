@@ -1,5 +1,8 @@
 from solution import ImpossiblePuzzle
 
+import numpy as np
+import matplotlib.pyplot as plt
+
 
 def tester(*args):
     def sums(puzzle):
@@ -30,17 +33,32 @@ def tester(*args):
             k += 1
             l = len(puzzle)
             if len(prods(puzzle)[p]) == 1:
-                yield (a, b), 'P{}'.format(k)
                 break
             puzzle = puzzle.does_pete_know('no')
+            k += 1
             if len(sums(puzzle)[s]) == 1:
-                yield (a, b), 'S{}'.format(k)
                 break
             puzzle = puzzle.does_susan_know('no')
             if l == len(puzzle):
-                yield (a, b), 'Never'
+                k = 0
                 break
+        yield a, b, k
 
 
 if __name__ == '__main__':
-    print(list(tester(1, 40)))
+    n = 99
+    res = np.zeros((n, n))
+    for i, j, k in tester(1, n+1):
+        res[i-1, j-1] = k
+        res[j-1, i-1] = k
+    fig, ax = plt.subplots()
+    plt.set_cmap('inferno')
+    im = ax.imshow(np.ma.array(res, mask=(res == 0)),
+                   aspect='equal',
+                   interpolation='nearest',
+                   extent=(0.5, n+0.5, 0.5, n+0.5),
+                   origin='lower')
+    plt.colorbar(im, label='Rounds to crack')
+    ax.invert_yaxis()
+    ax.autoscale(tight=True)
+    plt.show()
