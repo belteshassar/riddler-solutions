@@ -10,7 +10,8 @@ class ImpossiblePuzzle(list):
                 (i, j) for i in s for j in s if i < j)
 
     @staticmethod
-    def from_range(*args, allow_equal=True):
+    def from_range(*args, **kwargs):
+        allow_equal = kwargs.get('allow_equal', True)
         return ImpossiblePuzzle.from_set(range(*args), allow_equal)
 
     def does_pete_know(self, answer):
