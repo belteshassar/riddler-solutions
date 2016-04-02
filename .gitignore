@@ -1,3 +1,7 @@
+# iPython Notebook Checkpoints
+# No necessary when notebook is version controlled
+.ipynb_checkpoints
+
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
 # Byte-compiled / optimized / DLL files
