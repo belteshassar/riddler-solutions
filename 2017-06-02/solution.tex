@@ -1,0 +1,66 @@
+\title{How Much Should You Bid For That Painting?}
+\author{
+        Daniel Eriksson \\
+        daniel@deriksson.se
+}
+\date{2017-07-03}
+
+\documentclass[12pt]{article}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+If you like me were dissatisfied with the official solution to the 2017-07-02 Riddler, here is an attempt at a more elaborate solution. It is safe to say that I was nerd-sniped by this problem, but at least I earned the shout-out.
+\end{abstract}
+
+\section{Original Question--Two Bidders}
+
+This is the original question. Two bidders draw their valuations from a uniform distribution. To simplify the maths, we are going to assume values drawn from $[0, 1]$. To rescale this to an arbitrary upper limit $a$, just multiply the answer with $a$.
+
+Instead of using the more general solution method detailed below, we can assume that there exists a Nash equilibrium where the bidders bid $s(v_i) = kv_i$. If one player chooses to deviate from this strategy and instead bids $b$, her probability of winning is $b/k$ for $b<k$ (there is no point in bidding higher than $k$). The expected payoff (utility function) for this player is
+$$
+u = \frac{b}{k}(v_i - b).
+$$
+Taking the derivative with respect to $b$ and setting it equal to 0, we get
+$$
+b = \frac{v_i}{2}.
+$$
+
+Since this solution satisfies the assumption, we have proven that the Nash equlibrium of this auction is for each player to bid half the value.
+
+\section{Extra Credit--$n$ Bidders}
+
+All we need to do to generalize the solution to $n$ participants is to update the win probability part of the utility function.
+$$
+u = \left(\frac{b}{k}\right)^{n-1}(v_i - b).
+$$
+Once more we differentiate with respect to $b$ and setting it equal to 0, to get
+$$
+b = \frac{n-1}{n}v_i.
+$$
+
+\section{Extra Extra Credit--All Pay Auction}
+
+If you were to try the same assumtion on this case, you would reach a contradiction. Instead of trying new assumptions until we find one that works, let's introduce a more general toolkit for solving this kind of problems.
+
+Assume that a Nash equilibrium is that each player bids $b_i = s(v_i)$, with some strategy function $s(\cdot)$. The strategy function has to be strictly increasing and differentiable on $[0, 1]$ and $s(0) = 0$. This means that a higher valuation produces a higher bid. We can model a deviation from the equilibrium as submitting a different valuation $v$ to the strategy function (This is known as the \emph{Revelation Principle}). Choosing $v \in [0, 1]$ will include all rational bids (there is never any idea to bid more than $s(1)$).
+
+The probability of winning if you bid $s(v)$ while the other players adhere to the equilibrium strategy is $v^{n-1}$. The payoff if you win is $v_i - s(v)$ and if you lose it's $-s(v)$ since you have to pay up anyway. Put together, we get the expected payoff, or utility function
+$$
+u = v^{n-1}v_i - s(v).
+$$
+If $s$ is truly an equilibrium strategy, the utility function should be maximized by setting $v=v_i$. A necessary condition for this is
+$$
+\left. \frac{\partial u}{\partial v} \right|^{v=v_i} = 0.
+$$
+I will leave out proving that this is sufficient. Evaluating the derivative, we get the differential equation
+$$
+(n-1)v_i^{n-1} - s'(v_i) = 0,
+$$
+which we can easily integrate. Since we require the solution to satisfy $s(0) = 0$, we get
+$$
+s(v_i) = \int_0^{v_i} (n-1)v^{n-1} dv = \frac{n-1}{n}v_i^n.
+$$
+
+\end{document}
